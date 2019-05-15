@@ -583,6 +583,22 @@ RCT_REMAP_METHOD(getActiveCall,
 
 - (void)performAnswerVoiceCallWithUUID:(NSUUID *)uuid
                             completion:(void(^)(BOOL success))completionHandler {
+    NSLog(@"performAnswerVoiceCallWithUUID called");
+
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    if (self.callInvite) {
+        if (self.callInvite.callSid){
+            [params setObject:self.callInvite.callSid forKey:@"call_sid"];
+        }
+        if (self.callInvite.from){
+            [params setObject:self.callInvite.from forKey:@"from"];
+        }
+        if (self.callInvite.to){
+            [params setObject:self.callInvite.to forKey:@"to"];
+        }
+    }
+    [params setObject:@"CONNECTING" forKey:@"call_state"];
+    [self sendEventWithName:@"connectionDidConnect" body:params];
 
     self.call = [self.callInvite acceptWithDelegate:self];
     self.callInvite = nil;
