@@ -526,7 +526,10 @@ RCT_REMAP_METHOD(getActiveCall,
 - (void)reportIncomingCallFrom:(NSString *)from withUUID:(NSUUID *)uuid {
   CXHandle *callHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:from];
   NSString *localizedCallerName = from;
-  localizedCallerName = [localizedCallerName stringByReplacingOccurrencesOfString:@"client:" withString:@"Gaius User: "];
+  localizedCallerName = [localizedCallerName stringByReplacingOccurrencesOfString:@"client:" withString:@""];
+  NSString *separatorString = @"__";
+  localizedCallerName = [localizedCallerName componentsSeparatedByString:separatorString].firstObject;
+  localizedCallerName = [localizedCallerName stringByReplacingOccurrencesOfString:@"_" withString:@" "];
 
   CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
   callUpdate.remoteHandle = callHandle;
