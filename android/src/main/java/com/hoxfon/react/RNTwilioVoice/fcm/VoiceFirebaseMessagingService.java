@@ -126,6 +126,12 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.e(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+
+            Intent notificationEvent = new Intent("notifications-remote-notification");
+            notificationEvent.putExtra("notification", remoteMessage);
+
+             // Broadcast it to the (foreground) RN Application
+            LocalBroadcastManager.getInstance(this).sendBroadcast(notificationEvent);
         }
     }
 
