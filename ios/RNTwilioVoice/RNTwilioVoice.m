@@ -510,7 +510,14 @@ RCT_REMAP_METHOD(getActiveCall,
     } else {
       NSLog(@"StartCallAction transaction request successful");
 
+      NSString *localizedCallerName = handle;
+      localizedCallerName = [localizedCallerName stringByReplacingOccurrencesOfString:@"client:" withString:@""];
+      NSString *separatorString = @"__";
+      localizedCallerName = [localizedCallerName componentsSeparatedByString:separatorString].firstObject;
+      localizedCallerName = [localizedCallerName stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+
       CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
+      callUpdate.localizedCallerName = localizedCallerName;
       callUpdate.remoteHandle = callHandle;
       callUpdate.supportsDTMF = YES;
       callUpdate.supportsHolding = YES;
